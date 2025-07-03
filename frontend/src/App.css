@@ -1,0 +1,42 @@
+#root {
+  
+  text-align: center;
+}
+#head{
+  padding-bottom:1px;
+  margin-bottom: 0;
+  
+}
+.login{
+  border-radius:1px;
+  margin:10px;
+}
+#log{
+  margin:10px;
+  background-color:palegreen;
+  
+}
+.product{
+  border-radius:1px;
+  margin:10px;
+}
+button{
+  cursor:pointer;
+  margin: 20px;
+}
+#border{
+  border:solid;
+  max-width: 300px;
+  padding: 5px;
+  border-width: 1px;
+} 
+tr:hover{
+     background-color: lightgrey;
+}
+label{
+  padding: 5px;
+}
+#search{
+  width: 300px;
+}
+
