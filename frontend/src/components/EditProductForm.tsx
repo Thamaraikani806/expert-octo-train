@@ -18,7 +18,7 @@ const EditProductForm: React.FC<Props> = ({ id, goHome }) => {
   const [image, setImage] = useState<File | null>(null);
 
   useEffect(() => {
-    instance.get(`/product/${id}`)
+    instance.get(`http://localhost:5000/products/${id}`)
       .then(res => setForm({
         id: res.data.id,
         name: res.data.name,
@@ -49,9 +49,8 @@ const EditProductForm: React.FC<Props> = ({ id, goHome }) => {
     formData.append('price', form.price);
     formData.append('brand', form.brand);
     if (image) formData.append('image', image);
-
     try {
-      await instance.put(`/product/${id}`, formData);
+      await instance.put(`http://localhost:5000/products/${id}`, formData);
       toast.success('Product updated successfully!');
       goHome();
     } catch (err: any) {

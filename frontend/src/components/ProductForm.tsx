@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import instance from '../api';
 
+
 interface Props {
   goHome: () => void;
 }
@@ -38,11 +39,12 @@ const ProductForm: React.FC<Props> = ({ goHome }) => {
   if (image) formData.append('image', image);
 
   try {
-    await instance.post('/product/create', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
+    await instance.post('http://localhost:5000/products/create', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
     toast.success('Product added');
     goHome();
+    localStorage.getItem('token'); 
   } catch (err: any) {
     toast.error(err?.response?.data?.message || 'Add failed');
   }
@@ -76,10 +78,10 @@ const validate = () => {
       <input name="id" placeholder="Product ID" value={form.id} onChange={handleChange} required /><br/><br />
 
       <label id="name">Product Name :</label>
-      <input name="name" placeholder="Name" value={form.name} onChange={handleChange} required /><br/><br />
+      <input name="name" placeholder="Name" value={form.name} onChange={handleChange} minLength={5} maxLength={50} required /><br/><br />
 
       <label id="description">Product Desc :</label>
-      <textarea name="description" placeholder="Description" value={form.description} onChange={handleChange} required /><br/><br />
+      <textarea name="description" placeholder="Description" value={form.description} onChange={handleChange} minLength={3} maxLength={100} required /><br/><br />
 
       <label id="price">Price :</label>
       <input name="price" placeholder="Price" value={form.price} onChange={handleChange} required /><br/><br />

@@ -10,8 +10,6 @@ const userSchema = new mongoose.Schema({
   address: { type: String },
 });
 
-
-
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   try {

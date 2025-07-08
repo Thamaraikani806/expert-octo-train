@@ -4,8 +4,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import Pagination from './Pagination';
 
 interface Product {
-  _id: string;
-  id: number;
+
+  id: string;
   name: string;
   description: string;
   price: string;
@@ -28,7 +28,7 @@ const Home: React.FC<Props> = ({ goToAddProduct, goToProductView, goToEditProduc
 
   const fetchProducts = async (pageNum = 1,  keyword = '') => {
     try {
-      const res = await instance.get(`/product/list?page=${pageNum}&search=${keyword}`);
+      const res = await instance.get(`http://localhost:5000/products/list?page=${pageNum}&search=${keyword}`);
       setProducts(res.data.products);
       setTotalPages(res.data.totalPages);
       setPage(res.data.page);
@@ -42,59 +42,7 @@ const Home: React.FC<Props> = ({ goToAddProduct, goToProductView, goToEditProduc
       fetchProducts(1, search);
   };
 
-  const [productss, setproducts] = useState<Product[]>([]);
-  const [pagee, setpage] = useState(1);
-  const [totalpages, settotalpages] = useState(1);
-  const [searchh, setsearch] = useState('');
-  const fetchproducts = async (pageNum = 1, keyword = '') => {
-    try{
-      const res = await instance.get(``);
-      setproducts(res.data.products);
-      settotalpages(res.data.totalpages);
-      setpage(res.data.pagee);
-    } catch (err) {
-      toast.error('Failed to load products');
-    }
-  };
-  const handlesearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    fetchproducts(1, search);
-  };
-  const handlestatus = async (id: string) => {
-    try{
-      const res = await instance.patch(``);
-      toast.success(res.data.message);
-      fetchproducts(pagee);
-    } catch {
-      toast.error('Failed to update status');
-    }
-  };
-  const handledelete = async (id: string) => {
-    if (!window.confirm('Are you sure you want to delete?')) return;
-    try{
-      await instance.delete(``);
-      toast.success('Deleted successfully');
-      fetchproducts(pagee);
-    } catch (err) {
-      toast.error('Delete failed');
-    }
-  };
-
-  const handlelogout = () => {
-    localStorage.removeItem('token');
-    window.location.href = '/login';
-  };
-
-  const handleStatus = async (id: string) => {
-  try {
-    const res = await instance.patch(`/product/status/${id}`);
-    toast.success(res.data.message);
-    fetchProducts(page);    
-  } catch {
-    toast.error('Failed to update status');
-  }
-  };
-
+  
   useEffect(() => {
     fetchProducts(page);
   }, [page]);
@@ -102,7 +50,7 @@ const Home: React.FC<Props> = ({ goToAddProduct, goToProductView, goToEditProduc
   const handleDelete = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete?')) return;
     try {
-      await instance.delete(`/product/${id}`);
+      await instance.delete(`http://localhost:5000/products/${id}`);
       toast.success('Deleted successfully');
       fetchProducts(page);
     } catch {
@@ -130,7 +78,7 @@ const Home: React.FC<Props> = ({ goToAddProduct, goToProductView, goToEditProduc
     </form>
     <button onClick={goToAddProduct}>+ Add Product</button>
     <button onClick={goToProductView}>View Products</button>
-    <center><table border={1} cellPadding={5} cellSpacing={0}>
+    <center><table border={1} cellPadding={5} cellSpacing={0} >
       <thead>
         <tr>
           <th>Product Name</th>
@@ -138,13 +86,12 @@ const Home: React.FC<Props> = ({ goToAddProduct, goToProductView, goToEditProduc
           <th>Brand</th>
           <th>Price</th>
           <th>Product Image</th>
-          <th>Status</th>
           <th>Actions</th>
         </tr>
         </thead>
         <tbody>
           {products.map((p) => (
-          <tr key={p._id}>
+          <tr key={p.id}>
             <td>{p.name}</td>
             <td>{p.description}</td>
             <td>{p.brand}</td>
@@ -152,14 +99,10 @@ const Home: React.FC<Props> = ({ goToAddProduct, goToProductView, goToEditProduc
             <td>
             {p.image && (<img src={`http://localhost:5000/uploads/${p.image}`} width={80} height={80} alt="product" /> )}
             </td>
-            <td>"{p.status}" /
-              <button onClick={() => handleStatus(p._id)}>
-                {p.status === 'active' ? 'Deactivate' : 'Activate'}
-              </button>
-            </td>
+
             <td>
-              <button onClick={() => goToEditProduct(p._id)}>Edit</button>
-              <button onClick={() => handleDelete(p._id)}>Delete</button>
+              <button onClick={() => goToEditProduct(p.id)}>Edit</button>
+              <button onClick={() => handleDelete(p.id)}>Delete</button>
             </td>
             </tr>
             ))}
