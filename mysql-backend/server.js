@@ -20,7 +20,7 @@ const Options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Full Stack Product API (MySQL + MongoDB)',
+      title: 'API documentation using Swagger.',
       version: '1.0.0',
       description: 'API docs for user auth and product management system',
     },
